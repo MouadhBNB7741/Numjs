@@ -1,4 +1,4 @@
-class Numpy {
+class Numjs {
   //array function accept an array of data and a data type(must be bigint boolean number string object/className)
   static array(data = [], dtype = "any") {
     if (!Array.isArray(shape)) throw Error("shape must be an array");
@@ -157,4 +157,28 @@ class Numpy {
       return result;
     }
   }
+
+  //
+  static reshape(array = [], newShape) {
+    if (!Array.isArray(array) || !Array.isArray(newShape))
+      throw Error("all params must be arrays");
+    let flatArray = array.flat(Infinity);
+    let totalSize = newShape.reduce((a, b) => a * b);
+    if (flatArray.length !== totalSize) throw new Error("Incompatible shape");
+    return this.recursiveReshape(newShape);
+  }
+  recursiveReshape(shape) {
+    if (shape.length === 1) {
+      return flatArray.splice(0, shape[0]);
+    }
+    let size = shape[0];
+    let rest = shape.slice(1);
+    let result = [];
+    for (let i = 0; i < size; i++) {
+      result.push(recursiveReshape(rest));
+    }
+    return result;
+  }
+
+  //
 }
