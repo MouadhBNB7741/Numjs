@@ -28,7 +28,10 @@ class Numjs {
     return arr;
   }
 
-  //ones function accept a shape and return an N dimension array filled with 1 based on the shape
+  /**
+   @function
+   @param shape Array
+   @return an N dimension array filled with 1 based on the shape*/
   static ones(shape) {
     if (!Array.isArray(shape)) throw Error("shape must be an array");
     const len = shape.length;
@@ -179,5 +182,25 @@ class Numjs {
     if (flatArray.length !== totalSize) throw new Error("Incompatible shape");
     return recursiveReshape(newShape);
   }
+
   //
+  static ravel(arr = []) {
+    if (!Array.isArray(arr)) throw Error("the param must be an array");
+    return arr.flat(Infinity);
+  }
+
+  //
+  static flatten(arr = []) {
+    if (!Array.isArray(arr)) throw Error("the param must be an array");
+    return arr.flat(Infinity).slice();
+  }
+
+  //
+  static transpose(array, axes = null) {
+    if (!Array.isArray(array)) throw Error("the param must be an array");
+    if (axes === null) {
+      return array[0].map((_, colIndex) => array.map((row) => row[colIndex]));
+    }
+    return axes.map((i) => array[i]);
+  }
 }
