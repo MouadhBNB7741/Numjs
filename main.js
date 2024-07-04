@@ -163,6 +163,8 @@ class Numjs {
 
   //
   static reshape(array = [], newShape) {
+    if (Array.isArray(array[0]))
+      throw Error("the first param must be a flat array");
     function recursiveReshape(shape) {
       if (shape.length === 1) {
         return flatArray.splice(0, shape[0]);
@@ -202,5 +204,145 @@ class Numjs {
       return array[0].map((_, colIndex) => array.map((row) => row[colIndex]));
     }
     return axes.map((i) => array[i]);
+  }
+
+  static swapaxes(array, axis1, axis2) {
+    if (!Array.isArray(array)) throw Error("first param must be an array");
+    if (!typeof axis1 === "number") throw Error("axis must be an number");
+    let temp = array.map((row) => row.slice());
+    for (let i = 0; i < temp.length; i++) {
+      [temp[i][axis1], temp[i][axis2]] = [temp[i][axis2], temp[i][axis1]];
+    }
+    return temp;
+  }
+
+  static concatenate(arrays, axis = 0) {
+    if (axis === 0) {
+      return arrays.reduce((acc, val) => acc.concat(val), []);
+    } else {
+      return arrays[0].map((_, i) => arrays.map((array) => array[i]).flat());
+    }
+  }
+
+  static stack(arrays, axis = 0) {
+    if (axis === 0) {
+      return [arrays];
+    } else {
+      return arrays[0].map((_, i) => arrays.map((array) => array[i]));
+    }
+  }
+
+  static split(array, sections, axis = 0) {
+    let result = [];
+    if (typeof sections === "number") {
+      let sectionSize = Math.ceil(array.length / sections);
+      for (let i = 0; i < array.length; i += sectionSize) {
+        result.push(array.slice(i, i + sectionSize));
+      }
+    } else {
+      let prevIndex = 0;
+      sections.forEach((index) => {
+        result.push(array.slice(prevIndex, index));
+        prevIndex = index;
+      });
+      result.push(array.slice(prevIndex));
+    }
+    return result;
+  }
+
+  static repeat(array, repeats, axis = null) {
+    if (axis === null) {
+      return array
+        .flat(Infinity)
+        .map((el) => Array(repeats).fill(el))
+        .flat();
+    } else {
+      return array.map((row) =>
+        row.map((el) => Array(repeats).fill(el)).flat()
+      );
+    }
+  }
+
+  static tile(array, reps) {
+    let result = array;
+    for (let i = 1; i < reps; i++) {
+      result = result.concat(array);
+    }
+    return result;
+  }
+
+  static add(arr1, arr2) {
+    if (!arr1 || !arr2) throw Error("Missing params");
+    if (!Array.isArray(arr1) || !Array.isArray(arr2))
+      throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr1);
+    const b = Numjs.flatten(arr2);
+
+    if (a.length !== b.length)
+      throw Error("Must enter two arrays with the same shape");
+
+    function isValidArr(arr) {
+      if (Array.isArray(arr)) {
+        isValidArr(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    isValidArr(arr1);
+
+    for (const i in a) {
+      res.push(a[i] + b[i]);
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  static sub(arr1, arr2) {
+    if (!arr1 || !arr2) throw Error("Missing params");
+    if (!Array.isArray(arr1) || !Array.isArray(arr2))
+      throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr1);
+    const b = Numjs.flatten(arr2);
+
+    if (a.length !== b.length)
+      throw Error("Must enter two arrays with the same shape");
+
+    function isValidArr(arr) {
+      if (Array.isArray(arr)) {
+        isValidArr(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    isValidArr(arr1);
+
+    for (const i in a) {
+      res.push(a[i] - b[i]);
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  static multiply() {
+    // :')
+  }
+}
+
+//for later transforming all arrays to numjs arrays
+class NumjsArrays extends Array {
+  constructor(shape, ndim, ...items) {
+    if (items.length === 1 && Array.isArray(items[0])) {
+      super(...items[0]);
+    } else {
+      super(...items);
+    }
+    this.shape = shape;
+    this.ndim = ndim;
   }
 }
