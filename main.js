@@ -679,16 +679,40 @@ class Numjs {
   static var() {}
 
   //
-  static min() {}
+  static min(arr = []) {
+    if (!Array.isArray(arr)) throw Error("must enter an array");
+    const res = arr.flat(Infinity);
+    return Math.min(...res);
+  }
 
   //
-  static max() {}
+  static max(arr = []) {
+    if (!Array.isArray(arr)) throw Error("must enter an array");
+    const res = arr.flat(Infinity);
+    return Math.max(...res);
+  }
 
   //
-  static sum() {}
+  static sum(arr = []) {
+    if (!Array.isArray(arr)) throw Error("must enter an array");
+    const res = arr.flat(Infinity);
+    let sum = 0;
+    for (const item in res) {
+      sum += item;
+    }
+    return sum;
+  }
 
   //
-  static prod() {}
+  static prod(arr = []) {
+    if (!Array.isArray(arr)) throw Error("must enter an array");
+    const res = arr.flat(Infinity);
+    let prod = 0;
+    for (const item in res) {
+      prod *= item;
+    }
+    return prod;
+  }
 }
 
 //for later transforming all arrays to numjs arrays
