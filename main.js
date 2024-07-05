@@ -867,6 +867,318 @@ class Numjs {
     }
     return Numjs.reshape(res, help.reverse());
   }
+
+  //
+  static exp(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.exp(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static log(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.log(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static log10(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.log10(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static log2(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.log2(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static expm1(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.expm1(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static log1p(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.log1p(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static sqrt(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.sqrt(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static square(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.pow(i, 2));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static absolute(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.abs(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static sign(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.sign(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static round(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.round(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static floor(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.floor(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static ceil(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.ceil(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
 }
 
 //for later transforming all arrays to numjs arrays
