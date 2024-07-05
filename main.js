@@ -664,7 +664,16 @@ class Numjs {
   }
 
   //
-  static std() {}
+  static std(arr = [], axis = null, ddof = 0) {
+    const res = Numjs.mean(arr, axis);
+    const flat = arr.flat(Infinity);
+    let sum = 0;
+    for (const item of flat) {
+      sum += Math.pow(item - res, 2);
+    }
+    sum /= flat.length - ddof;
+    return Math.sqrt(sum);
+  }
 
   //
   static var() {}
