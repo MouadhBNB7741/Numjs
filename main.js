@@ -284,15 +284,15 @@ class Numjs {
     if (a.length !== b.length)
       throw Error("Must enter two arrays with the same shape");
 
-    function isValidArr(arr) {
+    function getArrShape(arr) {
       if (Array.isArray(arr)) {
-        isValidArr(arr[0]);
+        getArrShape(arr[0]);
         return help.push(arr.length);
       }
       return null;
     }
 
-    isValidArr(arr1);
+    getArrShape(arr1);
 
     for (const i in a) {
       res.push(a[i] + b[i]);
@@ -313,15 +313,15 @@ class Numjs {
     if (a.length !== b.length)
       throw Error("Must enter two arrays with the same shape");
 
-    function isValidArr(arr) {
+    function getArrShape(arr) {
       if (Array.isArray(arr)) {
-        isValidArr(arr[0]);
+        getArrShape(arr[0]);
         return help.push(arr.length);
       }
       return null;
     }
 
-    isValidArr(arr1);
+    getArrShape(arr1);
 
     for (const i in a) {
       res.push(a[i] - b[i]);
@@ -329,9 +329,333 @@ class Numjs {
     return Numjs.reshape(res, help.reverse());
   }
 
-  static multiply() {
-    // :')
+  //
+  static multiply(arr1, arr2) {
+    function getShape(arr) {
+      let shape = [];
+      while (Array.isArray(arr)) {
+        shape.push(arr.length);
+        arr = arr[0];
+      }
+      return shape;
+    }
+
+    function isBroadcastable(shapeA, shapeB) {
+      const lenA = shapeA.length;
+      const lenB = shapeB.length;
+      const maxLength = Math.max(lenA, lenB);
+
+      for (let i = 1; i <= maxLength; i++) {
+        const dimA = shapeA[lenA - i] || 1;
+        const dimB = shapeB[lenB - i] || 1;
+        if (dimA !== dimB && dimA !== 1 && dimB !== 1) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function broadcastArray(arr, targetShape) {
+      const currentShape = getShape(arr);
+      const diff = targetShape.length - currentShape.length;
+
+      for (let i = 0; i < diff; i++) {
+        arr = [arr];
+      }
+
+      function broadcastHelper(arr, targetShape) {
+        if (targetShape.length === 0) {
+          return arr;
+        }
+
+        const [targetSize, ...remainingShape] = targetShape;
+        const currentSize = arr.length;
+
+        if (currentSize === targetSize) {
+          return arr.map((item) => broadcastHelper(item, remainingShape));
+        } else if (currentSize === 1) {
+          return Array(targetSize)
+            .fill(arr[0])
+            .map((item) => broadcastHelper(item, remainingShape));
+        } else {
+          throw new Error("Broadcasting failed");
+        }
+      }
+
+      return broadcastHelper(arr, targetShape);
+    }
+
+    function elementWiseMultiply(A, B) {
+      if (Array.isArray(A) && Array.isArray(B)) {
+        return A.map((a, i) => elementWiseMultiply(a, B[i]));
+      } else {
+        return A * B;
+      }
+    }
+
+    const shapeA = getShape(arr1);
+    const shapeB = getShape(arr2);
+
+    if (!isBroadcastable(shapeA, shapeB)) {
+      throw new Error("Shapes are not broadcastable");
+    }
+
+    const broadcastedB = broadcastArray(arr2, shapeA);
+
+    return elementWiseMultiply(arr1, broadcastedB);
   }
+
+  //
+  static divide(arr1, arr2) {
+    function getShape(arr) {
+      let shape = [];
+      while (Array.isArray(arr)) {
+        shape.push(arr.length);
+        arr = arr[0];
+      }
+      return shape;
+    }
+
+    function isBroadcastable(shapeA, shapeB) {
+      const lenA = shapeA.length;
+      const lenB = shapeB.length;
+      const maxLength = Math.max(lenA, lenB);
+
+      for (let i = 1; i <= maxLength; i++) {
+        const dimA = shapeA[lenA - i] || 1;
+        const dimB = shapeB[lenB - i] || 1;
+        if (dimA !== dimB && dimA !== 1 && dimB !== 1) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function broadcastArray(arr, targetShape) {
+      const currentShape = getShape(arr);
+      const diff = targetShape.length - currentShape.length;
+
+      for (let i = 0; i < diff; i++) {
+        arr = [arr];
+      }
+
+      function broadcastHelper(arr, targetShape) {
+        if (targetShape.length === 0) {
+          return arr;
+        }
+
+        const [targetSize, ...remainingShape] = targetShape;
+        const currentSize = arr.length;
+
+        if (currentSize === targetSize) {
+          return arr.map((item) => broadcastHelper(item, remainingShape));
+        } else if (currentSize === 1) {
+          return Array(targetSize)
+            .fill(arr[0])
+            .map((item) => broadcastHelper(item, remainingShape));
+        } else {
+          throw new Error("Broadcasting failed");
+        }
+      }
+
+      return broadcastHelper(arr, targetShape);
+    }
+
+    function elementWiseDivide(A, B) {
+      if (Array.isArray(A) && Array.isArray(B)) {
+        return A.map((a, i) => elementWiseDivide(a, B[i]));
+      } else {
+        return A / B;
+      }
+    }
+
+    const shapeA = getShape(arr1);
+    const shapeB = getShape(arr2);
+
+    if (!isBroadcastable(shapeA, shapeB)) {
+      throw new Error("Shapes are not broadcastable");
+    }
+
+    const broadcastedB = broadcastArray(arr2, shapeA);
+
+    return elementWiseDivide(arr1, broadcastedB);
+  }
+
+  //
+  static pow(arr1, arr2) {
+    function getShape(arr) {
+      let shape = [];
+      while (Array.isArray(arr)) {
+        shape.push(arr.length);
+        arr = arr[0];
+      }
+      return shape;
+    }
+
+    function isBroadcastable(shapeA, shapeB) {
+      const lenA = shapeA.length;
+      const lenB = shapeB.length;
+      const maxLength = Math.max(lenA, lenB);
+
+      for (let i = 1; i <= maxLength; i++) {
+        const dimA = shapeA[lenA - i] || 1;
+        const dimB = shapeB[lenB - i] || 1;
+        if (dimA !== dimB && dimA !== 1 && dimB !== 1) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function broadcastArray(arr, targetShape) {
+      const currentShape = getShape(arr);
+      const diff = targetShape.length - currentShape.length;
+
+      for (let i = 0; i < diff; i++) {
+        arr = [arr];
+      }
+
+      function broadcastHelper(arr, targetShape) {
+        if (targetShape.length === 0) {
+          return arr;
+        }
+
+        const [targetSize, ...remainingShape] = targetShape;
+        const currentSize = arr.length;
+
+        if (currentSize === targetSize) {
+          return arr.map((item) => broadcastHelper(item, remainingShape));
+        } else if (currentSize === 1) {
+          return Array(targetSize)
+            .fill(arr[0])
+            .map((item) => broadcastHelper(item, remainingShape));
+        } else {
+          throw new Error("Broadcasting failed");
+        }
+      }
+
+      return broadcastHelper(arr, targetShape);
+    }
+
+    function elementWisePow(A, B) {
+      if (Array.isArray(A) && Array.isArray(B)) {
+        return A.map((a, i) => elementWisePow(a, B[i]));
+      } else {
+        return A ** B;
+      }
+    }
+
+    const shapeA = getShape(arr1);
+    const shapeB = getShape(arr2);
+
+    if (!isBroadcastable(shapeA, shapeB)) {
+      throw new Error("Shapes are not broadcastable");
+    }
+
+    const broadcastedB = broadcastArray(arr2, shapeA);
+
+    return elementWisePow(arr1, broadcastedB);
+  }
+
+  //
+  static mod(arr1, arr2) {
+    function getShape(arr) {
+      let shape = [];
+      while (Array.isArray(arr)) {
+        shape.push(arr.length);
+        arr = arr[0];
+      }
+      return shape;
+    }
+
+    function isBroadcastable(shapeA, shapeB) {
+      const lenA = shapeA.length;
+      const lenB = shapeB.length;
+      const maxLength = Math.max(lenA, lenB);
+
+      for (let i = 1; i <= maxLength; i++) {
+        const dimA = shapeA[lenA - i] || 1;
+        const dimB = shapeB[lenB - i] || 1;
+        if (dimA !== dimB && dimA !== 1 && dimB !== 1) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function broadcastArray(arr, targetShape) {
+      const currentShape = getShape(arr);
+      const diff = targetShape.length - currentShape.length;
+
+      for (let i = 0; i < diff; i++) {
+        arr = [arr];
+      }
+
+      function broadcastHelper(arr, targetShape) {
+        if (targetShape.length === 0) {
+          return arr;
+        }
+
+        const [targetSize, ...remainingShape] = targetShape;
+        const currentSize = arr.length;
+
+        if (currentSize === targetSize) {
+          return arr.map((item) => broadcastHelper(item, remainingShape));
+        } else if (currentSize === 1) {
+          return Array(targetSize)
+            .fill(arr[0])
+            .map((item) => broadcastHelper(item, remainingShape));
+        } else {
+          throw new Error("Broadcasting failed");
+        }
+      }
+
+      return broadcastHelper(arr, targetShape);
+    }
+
+    function elementWiseMod(A, B) {
+      if (Array.isArray(A) && Array.isArray(B)) {
+        return A.map((a, i) => elementWiseMod(a, B[i]));
+      } else {
+        return A * B;
+      }
+    }
+
+    const shapeA = getShape(arr1);
+    const shapeB = getShape(arr2);
+
+    if (!isBroadcastable(shapeA, shapeB)) {
+      throw new Error("Shapes are not broadcastable");
+    }
+
+    const broadcastedB = broadcastArray(arr2, shapeA);
+
+    return elementWiseMod(arr1, broadcastedB);
+  }
+
+  //
+  static mean() {}
+
+  //
+  static median() {}
+
+  //
+  static std() {}
+
+  //
+  static var() {}
+
+  //
+  static min() {}
+
+  //
+  static max() {}
+
+  //
+  static sum() {}
+
+  //
+  static prod() {}
 }
 
 //for later transforming all arrays to numjs arrays
