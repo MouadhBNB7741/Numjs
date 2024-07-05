@@ -634,10 +634,34 @@ class Numjs {
   }
 
   //
-  static mean() {}
+  static mean(arr = [], axis = null) {
+    if (!Array.isArray(arr)) throw Error("must enter an array");
+    if (axis !== null && axis > 1) throw Error("axis out of bound");
+    if (axis === null) {
+      const flattened = arr.flat(Infinity);
+      const sum = flattened.reduce((acc, val) => acc + val, 0);
+      return sum / flattened.length;
+    }
+    if (axis === 0) {
+      const res = arr.map((_, colIndex) => {
+        const sum = arr.reduce((acc, row) => acc + row[colIndex], 0);
+        return sum / arr.length;
+      });
+      return res;
+    }
+    const res = arr.map((row) => {
+      const sum = row.reduce((acc, val) => acc + val, 0);
+      return sum / row.length;
+    });
+    return res;
+  }
 
   //
-  static median() {}
+  static median(arr = []) {
+    if (!Array.isArray(arr)) throw Error("must enter an array");
+    const res = arr.flat(Infinity);
+    return res[Math.floor(res.length / 2)];
+  }
 
   //
   static std() {}
