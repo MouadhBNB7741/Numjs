@@ -665,6 +665,7 @@ class Numjs {
 
   //
   static std(arr = [], axis = null, ddof = 0) {
+    if (typeof ddof !== "number") throw Error("ddof must be a number");
     const res = Numjs.mean(arr, axis);
     const flat = arr.flat(Infinity);
     let sum = 0;
@@ -676,7 +677,16 @@ class Numjs {
   }
 
   //
-  static var() {}
+  static var(arr = [], ddof = 0) {
+    if (typeof ddof !== "number") throw Error("ddof must be a number");
+    const res = Numjs.mean(arr, axis);
+    const flat = arr.flat(Infinity);
+    let sum = 0;
+    for (const item of flat) {
+      sum += Math.pow(item - res, 2);
+    }
+    return sum / (flat.length - ddof);
+  }
 
   //
   static min(arr = []) {
