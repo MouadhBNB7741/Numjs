@@ -723,6 +723,150 @@ class Numjs {
     }
     return prod;
   }
+
+  //
+  static sin(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.sin(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static cos(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.cos(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static tan(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.tan(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static arcsin(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.asin(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static arccos(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.acos(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
+
+  //
+  static arctan(arr = []) {
+    if (!Array.isArray(arr)) throw Error("params must be an array");
+
+    const help = [];
+    const res = [];
+    const a = Numjs.flatten(arr);
+
+    function getArrShape(arr) {
+      if (Array.isArray(arr)) {
+        getArrShape(arr[0]);
+        return help.push(arr.length);
+      }
+      return null;
+    }
+
+    getArrShape(arr);
+
+    for (const i in a) {
+      res.push(Math.atan(i));
+    }
+    return Numjs.reshape(res, help.reverse());
+  }
 }
 
 //for later transforming all arrays to numjs arrays
