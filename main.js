@@ -1227,7 +1227,20 @@ class Numjs {
   }
 
   //
-  static inner() {}
+  static inner(arr1 = [], arr2 = []) {
+    if (Array.isArray(arr1[0]) || Array.isArray(arr2[0]))
+      throw Error("must enter 1Dimensional arrays");
+    if (arr1.length !== arr2.length)
+      throw Error("arrays must have the same length");
+
+    const len = arr1.length;
+    const res = [];
+    for (let i = 0; i < len; i++) {
+      res.push(arr1[i] * arr2[i]);
+    }
+
+    return res;
+  }
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1242,42 +1255,3 @@ class NumjsArrays extends Array {
     this.ndim = ndim;
   }
 }
-
-console.log(
-  Numjs.dot(
-    [
-      [
-        [1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 3],
-      ],
-      [
-        [1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 3],
-      ],
-      [
-        [1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 3],
-      ],
-    ],
-    [
-      [
-        [1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 3],
-      ],
-      [
-        [1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 3],
-      ],
-      [
-        [1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 3],
-      ],
-    ]
-  )
-);
