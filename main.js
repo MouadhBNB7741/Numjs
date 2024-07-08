@@ -1157,7 +1157,7 @@ class Numjs {
   }
 
   //
-  static ceil(arr = []) {
+  ceil(arr = []) {
     if (!Array.isArray(arr)) throw Error("params must be an array");
 
     const help = [];
@@ -1179,6 +1179,55 @@ class Numjs {
     }
     return Numjs.reshape(res, help.reverse());
   }
+
+  //
+  static dot(arr1, arr2) {
+    function getDimensions(arr) {
+      const dimensions = [];
+      while (Array.isArray(arr)) {
+        dimensions.push(arr.length);
+        arr = arr[0];
+      }
+      return dimensions;
+    }
+
+    const aDim = getDimensions(arr1);
+    const bDim = getDimensions(arr2);
+
+    if (aDim.length === 1 && bDim.length === 1) {
+      if (arr1.length !== arr2.length) {
+        throw new Error("Vectors must have the same length");
+      }
+      return arr1.reduce((sum, val, i) => sum + val * arr2[i], 0);
+    }
+
+    if (aDim.length === 2 && bDim.length === 2) {
+      if (aDim[1] !== bDim[0]) {
+        throw new Error(
+          "Number of columns in the first matrix must be equal to the number of rows in the second matrix"
+        );
+      }
+
+      const result = Array(aDim[0])
+        .fill()
+        .map(() => Array(bDim[1]).fill(0));
+
+      for (let i = 0; i < aDim[0]; i++) {
+        for (let j = 0; j < bDim[1]; j++) {
+          for (let k = 0; k < aDim[1]; k++) {
+            result[i][j] += arr1[i][k] * arr2[k][j];
+          }
+        }
+      }
+
+      return result;
+    }
+
+    //Ndim arrays needed
+  }
+
+  //
+  static inner() {}
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1193,3 +1242,42 @@ class NumjsArrays extends Array {
     this.ndim = ndim;
   }
 }
+
+console.log(
+  Numjs.dot(
+    [
+      [
+        [1, 2, 3],
+        [1, 2, 3],
+        [1, 2, 3],
+      ],
+      [
+        [1, 2, 3],
+        [1, 2, 3],
+        [1, 2, 3],
+      ],
+      [
+        [1, 2, 3],
+        [1, 2, 3],
+        [1, 2, 3],
+      ],
+    ],
+    [
+      [
+        [1, 2, 3],
+        [1, 2, 3],
+        [1, 2, 3],
+      ],
+      [
+        [1, 2, 3],
+        [1, 2, 3],
+        [1, 2, 3],
+      ],
+      [
+        [1, 2, 3],
+        [1, 2, 3],
+        [1, 2, 3],
+      ],
+    ]
+  )
+);
