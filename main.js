@@ -1390,12 +1390,49 @@ class Numjs {
     //
     static shuffle(array = []) {
       if (!Array.isArray(array)) throw Error("param must be an array");
+
+      function getDimensions(arr) {
+        const dimensions = [];
+        while (Array.isArray(arr)) {
+          dimensions.push(arr.length);
+          arr = arr[0];
+        }
+        return dimensions;
+      }
+
+      const a = getDimensions(array);
+      const flat = array.flat(Infinity);
+      for (let i = flat.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [flat[i], flat[j]] = [flat[j], flat[i]];
+      }
+      return Numjs.reshape(flat, a);
+    }
+
+    //
+    static permutation(array = []) {
+      if (!Array.isArray(array)) throw Error("param must be an array");
       if (Array.isArray(array[0])) throw Error("param must be 1D array");
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
       }
       return array;
+    }
+
+    //
+    static seed(num) {
+      function setSeed(seed) {
+        let state = seed % 2147483647;
+        if (state <= 0) {
+          state += 2147483646;
+        }
+        return () => {
+          state = (state * 16807) % 2147483647;
+          return (state - 1) / 2147483646;
+        };
+      }
+      return setSeed(num);
     }
   };
 }
@@ -1412,5 +1449,3 @@ class NumjsArrays extends Array {
     this.ndim = ndim;
   }
 }
-
-console.log(Numjs.Random.choice(["hi", 2, 3, 4, ["hello", "k", 5, true]], 5));
