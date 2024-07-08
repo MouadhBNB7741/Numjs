@@ -1259,6 +1259,33 @@ class Numjs {
 
     return res;
   }
+
+  //
+  static matmul(arr1 = [], arr2 = []) {
+    if (
+      !Array.isArray(arr1[0]) ||
+      !Array.isArray(
+        arr2[0] || Array.isArray(arr1[0][0]) || Array.isArray(arr2[0][0])
+      )
+    )
+      throw Error("must enter 2 matrixs");
+
+    const len1 = arr1.length;
+    const len2 = arr2[0].length;
+    const result = Array(len1)
+      .fill()
+      .map(() => Array(len2).fill(0));
+
+    for (let i = 0; i < len1; i++) {
+      for (let j = 0; j < len2; j++) {
+        for (let k = 0; k < len2; k++) {
+          result[i][j] += arr1[i][k] * arr2[k][j];
+        }
+      }
+    }
+
+    return result;
+  }
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1273,3 +1300,15 @@ class NumjsArrays extends Array {
     this.ndim = ndim;
   }
 }
+
+const arr1 = [
+  [1, 2],
+  [3, 4],
+];
+const arr2 = [
+  [5, 6],
+  [7, 8],
+];
+
+const result = Numjs.matmul(arr1, arr2);
+console.log(result);
