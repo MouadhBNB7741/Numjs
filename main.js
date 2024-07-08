@@ -1181,7 +1181,7 @@ class Numjs {
   }
 
   //
-  static dot(arr1, arr2) {
+  static dot(arr1 = [], arr2 = []) {
     function getDimensions(arr) {
       const dimensions = [];
       while (Array.isArray(arr)) {
@@ -1286,6 +1286,34 @@ class Numjs {
 
     return result;
   }
+
+  //
+  static tensordot(arr1 = [], arr2 = [], axes = 1) {}
+
+  //
+  static Random = class {
+    static rand(shape) {
+      if (!Array.isArray(shape)) throw Error("shape must be an array");
+      const len = shape.length;
+      let arr = new Array(shape[len - 1]).fill();
+      for (let i = len - 2; i >= 0; i--) {
+        if (typeof shape[i] !== "number") {
+          throw Error(
+            "shape must be an array of numbers the " +
+              i +
+              "th position is not a number"
+          );
+        }
+        arr = new Array(shape[i]).fill(arr);
+      }
+      let res = arr.flat(Infinity);
+      const arrLen = res.length;
+      for (let i = 0; i < arrLen; i++) {
+        res[i] = Math.random();
+      }
+      return Numjs.reshape(res, shape);
+    }
+  };
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1301,14 +1329,4 @@ class NumjsArrays extends Array {
   }
 }
 
-const arr1 = [
-  [1, 2],
-  [3, 4],
-];
-const arr2 = [
-  [5, 6],
-  [7, 8],
-];
-
-const result = Numjs.matmul(arr1, arr2);
-console.log(result);
+console.log(Numjs.Random.rand([2, 3, 5]));
