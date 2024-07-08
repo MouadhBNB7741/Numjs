@@ -1372,6 +1372,20 @@ class Numjs {
       }
       return Numjs.reshape(res, shape);
     }
+
+    //
+    static choice(arr = [], elemNum) {
+      if (!Array.isArray(arr)) throw Error("first param must be an array");
+      if (typeof elemNum !== "number")
+        throw Error("second param must be a number");
+      const res = new Array(elemNum);
+      const sample = arr.flat(Infinity);
+      const len = sample.length;
+      for (let i = 0; i < elemNum; i++) {
+        res[i] = sample[Math.floor(Math.random() * len)];
+      }
+      return res;
+    }
   };
 }
 
@@ -1388,4 +1402,4 @@ class NumjsArrays extends Array {
   }
 }
 
-console.log(Numjs.Random.randint(5, 10, [2, 3, 5]));
+console.log(Numjs.Random.choice(["hi", 2, 3, 4, ["hello", "k", 5, true]], 5));
