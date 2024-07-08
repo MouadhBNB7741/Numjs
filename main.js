@@ -1386,6 +1386,17 @@ class Numjs {
       }
       return res;
     }
+
+    //
+    static shuffle(array = []) {
+      if (!Array.isArray(array)) throw Error("param must be an array");
+      if (Array.isArray(array[0])) throw Error("param must be 1D array");
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
   };
 }
 
