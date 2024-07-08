@@ -1292,6 +1292,7 @@ class Numjs {
 
   //
   static Random = class {
+    //
     static rand(shape) {
       if (!Array.isArray(shape)) throw Error("shape must be an array");
       const len = shape.length;
@@ -1313,6 +1314,40 @@ class Numjs {
       }
       return Numjs.reshape(res, shape);
     }
+
+    //
+    static randn(shape) {
+      if (!Array.isArray(shape)) throw Error("shape must be an array");
+      const len = shape.length;
+      let arr = new Array(shape[len - 1]).fill();
+      for (let i = len - 2; i >= 0; i--) {
+        if (typeof shape[i] !== "number") {
+          throw Error(
+            "shape must be an array of numbers the " +
+              i +
+              "th position is not a number"
+          );
+        }
+        arr = new Array(shape[i]).fill(arr);
+      }
+      let res = arr.flat(Infinity);
+      const arrLen = res.length;
+      for (let i = 0; i < arrLen; i++) {
+        res[i] =
+          Math.random() > 0.5
+            ? Math.random() > 0.33
+              ? Math.random() > 0.5
+                ? Math.random()
+                : Math.random() + 2
+              : Math.random() + 1
+            : Math.random() > 0.33
+            ? Math.random() > 0.5
+              ? Math.random() * -1
+              : (Math.random() + 2) * -1
+            : (Math.random() + 1) * -1;
+      }
+      return Numjs.reshape(res, shape);
+    }
   };
 }
 
@@ -1329,4 +1364,4 @@ class NumjsArrays extends Array {
   }
 }
 
-console.log(Numjs.Random.rand([2, 3, 5]));
+console.log(Numjs.Random.randn([2, 3, 5]));
