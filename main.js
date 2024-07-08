@@ -1234,9 +1234,27 @@ class Numjs {
       throw Error("arrays must have the same length");
 
     const len = arr1.length;
-    const res = [];
+    let res = 0;
     for (let i = 0; i < len; i++) {
-      res.push(arr1[i] * arr2[i]);
+      res += arr1[i] * arr2[i];
+    }
+
+    return res;
+  }
+
+  //
+  static outer(arr1 = [], arr2 = []) {
+    if (Array.isArray(arr1[0]) || Array.isArray(arr2[0]))
+      throw Error("must enter 1Dimensional arrays");
+
+    const len1 = arr1.length;
+    const len2 = arr2.length;
+    const res = [];
+    for (let i = 0; i < len1; i++) {
+      res.push(new Array());
+      for (let j = 0; j < len2; j++) {
+        res[i].push(arr1[i] * arr2[j]);
+      }
     }
 
     return res;
