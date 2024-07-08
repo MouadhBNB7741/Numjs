@@ -1348,6 +1348,30 @@ class Numjs {
       }
       return Numjs.reshape(res, shape);
     }
+    static randint(min = 0, max, shape) {
+      if (!Array.isArray(shape)) throw Error("shape must be an array");
+      if (typeof max !== "number") throw Error("max must be a number");
+      if (typeof min !== "number") throw Error("min must be a number");
+      if (max < min) throw Error("min should be smaller than the max");
+      const len = shape.length;
+      let arr = new Array(shape[len - 1]).fill();
+      for (let i = len - 2; i >= 0; i--) {
+        if (typeof shape[i] !== "number") {
+          throw Error(
+            "shape must be an array of numbers the " +
+              i +
+              "th position is not a number"
+          );
+        }
+        arr = new Array(shape[i]).fill(arr);
+      }
+      let res = arr.flat(Infinity);
+      const arrLen = res.length;
+      for (let i = 0; i < arrLen; i++) {
+        res[i] = Math.floor(Math.random() * (max - min) + min);
+      }
+      return Numjs.reshape(res, shape);
+    }
   };
 }
 
@@ -1364,4 +1388,4 @@ class NumjsArrays extends Array {
   }
 }
 
-console.log(Numjs.Random.randn([2, 3, 5]));
+console.log(Numjs.Random.randint(5, 10, [2, 3, 5]));
