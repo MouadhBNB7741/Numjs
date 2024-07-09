@@ -1460,6 +1460,25 @@ class Numjs {
     indices.sort((a, b) => arr[a] - arr[b]);
     return indices;
   }
+
+  //
+  static searchSorted(arr = [], value, side = "left") {
+    if (Array.isArray(arr[0])) throw Error("must enter a 1 dimension array");
+    if (typeof value !== "number") throw Error("value must be a number");
+    if (side !== "left" && side !== "right")
+      throw Error("side must be either left or right");
+
+    let i;
+    if (side === "right") {
+      for (i = arr.length - 1; i >= 0; i--) {
+        if (value > arr[i]) return i + 1;
+      }
+    }
+    const len = arr.length;
+    for (i = 0; i < len; i++) {
+      if (value < arr[i]) return i;
+    }
+  }
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1475,4 +1494,4 @@ class NumjsArrays extends Array {
   }
 }
 
-console.log(Numjs.argSort([1, 2, 3, 4, -5, 0, 7, -1, 10]));
+console.log(Numjs.searchSorted([1, 2, 3, 4, 6, 7, 8, 9, 10], 5, "right"));
