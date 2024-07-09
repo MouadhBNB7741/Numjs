@@ -1435,6 +1435,23 @@ class Numjs {
       return setSeed(num);
     }
   };
+
+  //
+  static sort(arr = []) {
+    function getDimensions(arr) {
+      const dimensions = [];
+      while (Array.isArray(arr)) {
+        dimensions.push(arr.length);
+        arr = arr[0];
+      }
+      return dimensions;
+    }
+
+    const a = getDimensions(arr);
+    const res = arr.flat(Infinity);
+    res.sort((a, b) => a - b);
+    return Numjs.reshape(res, a);
+  }
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1449,3 +1466,10 @@ class NumjsArrays extends Array {
     this.ndim = ndim;
   }
 }
+
+console.log(
+  Numjs.sort([
+    [1, 2, 3, 4],
+    [-5, 0, 7, -1],
+  ])
+);
