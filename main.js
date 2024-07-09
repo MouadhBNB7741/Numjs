@@ -1479,6 +1479,17 @@ class Numjs {
       if (value < arr[i]) return i;
     }
   }
+
+  //
+  static countNonZero(arr = []) {
+    if (!Array.isArray(arr)) throw Error("must enter an array");
+    const flat = arr.flat(Infinity);
+    let c = 0;
+    for (const item of flat) {
+      if (item !== 0) c++;
+    }
+    return c;
+  }
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1494,4 +1505,4 @@ class NumjsArrays extends Array {
   }
 }
 
-console.log(Numjs.searchSorted([1, 2, 3, 4, 6, 7, 8, 9, 10], 5, "right"));
+console.log(Numjs.countNonZero([0, 1, 2, 3, 4, 6, 7, 8, 9, 10]));
