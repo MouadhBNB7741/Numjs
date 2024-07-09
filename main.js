@@ -1490,6 +1490,35 @@ class Numjs {
     }
     return c;
   }
+
+  //
+  static unique(arr = []) {
+    if (Array.isArray(arr[0])) throw Error("must enter a 1 dimension array");
+
+    const uniqueValue = new Set(arr);
+    const indices = [];
+    const inverse = [];
+    const counts = {};
+
+    for (const item of arr) {
+      inverse.push(arr.indexOf(item));
+      if (counts[item]) {
+        counts[item]++;
+      } else {
+        counts[item] = 1;
+      }
+    }
+    uniqueValue.forEach((value) => {
+      indices.push(arr.indexOf(value));
+    });
+
+    return {
+      uniqueValue: uniqueValue,
+      indices: indices,
+      inverse: inverse,
+      counts: counts,
+    };
+  }
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1505,4 +1534,7 @@ class NumjsArrays extends Array {
   }
 }
 
-console.log(Numjs.countNonZero([0, 1, 2, 3, 4, 6, 7, 8, 9, 10]));
+console.log(Numjs.unique([1, 2, 3, 9, 5, 6, 8, 8, 8, 8, 4, 5]).uniqueValue);
+console.log(Numjs.unique([1, 2, 3, 9, 5, 6, 8, 8, 8, 8, 4, 5]).indices);
+console.log(Numjs.unique([1, 2, 3, 9, 5, 6, 8, 8, 8, 8, 4, 5]).inverse);
+console.log(Numjs.unique([1, 2, 3, 9, 5, 6, 8, 8, 8, 8, 4, 5]).counts);
