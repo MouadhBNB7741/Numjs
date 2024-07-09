@@ -1452,6 +1452,14 @@ class Numjs {
     res.sort((a, b) => a - b);
     return Numjs.reshape(res, a);
   }
+
+  //
+  static argSort(arr = []) {
+    if (Array.isArray(arr[0])) throw Error("must enter a 1 dimension array");
+    const indices = arr.map((value, index) => index);
+    indices.sort((a, b) => arr[a] - arr[b]);
+    return indices;
+  }
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1467,9 +1475,4 @@ class NumjsArrays extends Array {
   }
 }
 
-console.log(
-  Numjs.sort([
-    [1, 2, 3, 4],
-    [-5, 0, 7, -1],
-  ])
-);
+console.log(Numjs.argSort([1, 2, 3, 4, -5, 0, 7, -1, 10]));
