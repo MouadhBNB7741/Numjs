@@ -1291,6 +1291,27 @@ class Numjs {
   static tensordot(arr1 = [], arr2 = [], axes = 1) {}
 
   //
+  static Linalg = class {
+    //
+    static solve() {}
+
+    //
+    static inv() {}
+
+    //
+    static det() {}
+
+    //
+    static eig() {}
+
+    //
+    static svd() {}
+
+    //
+    static norm() {}
+  };
+
+  //
   static Random = class {
     //
     static rand(shape) {
@@ -1495,7 +1516,7 @@ class Numjs {
   static unique(arr = []) {
     if (Array.isArray(arr[0])) throw Error("must enter a 1 dimension array");
 
-    const uniqueValue = new Set(arr);
+    const uniqueValue = [...new Set(arr)];
     const indices = [];
     const inverse = [];
     const counts = {};
@@ -1519,6 +1540,23 @@ class Numjs {
       counts: counts,
     };
   }
+
+  //
+  static intersect1d(arr1 = [], arr2 = []) {
+    if (
+      Array.isArray(arr1[0]) &&
+      Array.isArray(arr2[0] && !Array.isArray(arr1) && !Array.isArray(arr2))
+    )
+      throw Error("params must be 1 dimension array");
+
+    const res = new Set();
+    for (const item of arr1) {
+      if (arr2.includes(item)) {
+        res.add(item);
+      }
+    }
+    return [...res];
+  }
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1534,7 +1572,5 @@ class NumjsArrays extends Array {
   }
 }
 
-console.log(Numjs.unique([1, 2, 3, 9, 5, 6, 8, 8, 8, 8, 4, 5]).uniqueValue);
-console.log(Numjs.unique([1, 2, 3, 9, 5, 6, 8, 8, 8, 8, 4, 5]).indices);
-console.log(Numjs.unique([1, 2, 3, 9, 5, 6, 8, 8, 8, 8, 4, 5]).inverse);
-console.log(Numjs.unique([1, 2, 3, 9, 5, 6, 8, 8, 8, 8, 4, 5]).counts);
+console.log(Numjs.intersect1d([1, 2, 3, 4, 5, 6], [4, 5, 6, 7, 8, 9]));
+console.log(Numjs.unique([1, 1, 1, 2, 3, 4, 4, 5, 5, 5, 3]).uniqueValue);
