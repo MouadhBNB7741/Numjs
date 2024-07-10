@@ -1584,8 +1584,24 @@ class Numjs {
     return [...res];
   }
 
+  //
   static setxor1d(arr1 = [], arr2 = []) {
     return [...Numjs.setdiff1d(arr1, arr2), ...Numjs.setdiff1d(arr2, arr1)];
+  }
+
+  //
+  static in1d(arr1 = [], arr2 = []) {
+    if (
+      Array.isArray(arr1[0]) &&
+      Array.isArray(arr2[0] && !Array.isArray(arr1) && !Array.isArray(arr2))
+    )
+      throw Error("params must be 1 dimension array");
+
+    const res = [];
+    for (const item of arr1) {
+      arr2.includes(item) ? res.push(true) : res.push(false);
+    }
+    return res;
   }
 }
 
@@ -1602,4 +1618,4 @@ class NumjsArrays extends Array {
   }
 }
 
-console.log(Numjs.setxor1d([1, 2, 3, 4, 5, 6], [4, 5, 6, 7, 8, 9]));
+console.log(Numjs.in1d([1, 2, 3, 4, 5, 6], [4, 5, 6, 7, 8, 9]));
