@@ -1603,6 +1603,29 @@ class Numjs {
     }
     return res;
   }
+
+  //
+  static polyval(arr = [], xValues = []) {
+    if (
+      !Array.isArray(arr) &&
+      Array.isArray(arr[0]) &&
+      !Array.isArray(xValues) &&
+      Array.isArray(xValues[0])
+    )
+      throw Error("params must be 1 dimension array");
+
+    const res = [];
+    const len = arr.length;
+    for (const x of xValues) {
+      let val = 0;
+      for (let i = len - 1; i > 0; i--) {
+        val += Math.pow(x, i) * arr[len - i - 1];
+      }
+      val += arr[len - 1];
+      res.push(val);
+    }
+    return res;
+  }
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1618,4 +1641,4 @@ class NumjsArrays extends Array {
   }
 }
 
-console.log(Numjs.in1d([1, 2, 3, 4, 5, 6], [4, 5, 6, 7, 8, 9]));
+console.log(Numjs.polyval([4, 5, 6], [4]));
