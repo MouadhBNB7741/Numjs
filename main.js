@@ -1626,6 +1626,43 @@ class Numjs {
     }
     return res;
   }
+
+  //
+  static polyfit(arr1 = [], arr2 = [], d) {
+    //no idea tbh
+  }
+
+  //
+  static roots(coeffs = []) {
+    if (!Array.isArray(coeffs) || coeffs.length < 2) {
+      throw Error("Coefficients must be an array with at least two elements");
+    }
+
+    function companionMatrix(coeffs) {
+      const n = coeffs.length - 1;
+      const matrix = Array.from({ length: n }, (_, i) => Array(n).fill(0));
+
+      for (let i = 0; i < n - 1; i++) {
+        matrix[i + 1][i] = 1;
+      }
+
+      const lastRow = coeffs.slice(0, n).map((c) => -c / coeffs[n]);
+      matrix[0] = lastRow;
+      return matrix;
+    }
+
+    function eigenvalues(matrix) {
+      const numeric = require("numeric");
+      return numeric.eig(matrix).lambda.x;
+    }
+
+    const cMatrix = companionMatrix(coeffs);
+    return eigenvalues(cMatrix);
+  }
+
+  static "/"() {
+    console.log("wtf");
+  }
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1641,4 +1678,6 @@ class NumjsArrays extends Array {
   }
 }
 
-console.log(Numjs.polyval([4, 5, 6], [4]));
+console.log(Numjs.roots([1, -6, 11, -6]));
+
+Numjs["/"]();
