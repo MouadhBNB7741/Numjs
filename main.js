@@ -1568,6 +1568,21 @@ class Numjs {
 
     return [...new Set([...arr1, ...arr2])];
   }
+
+  //
+  static setdiff1d(arr1 = [], arr2 = []) {
+    if (
+      Array.isArray(arr1[0]) &&
+      Array.isArray(arr2[0] && !Array.isArray(arr1) && !Array.isArray(arr2))
+    )
+      throw Error("params must be 1 dimension array");
+
+    const res = new Set();
+    for (const item of arr1) {
+      if (!arr2.includes(item)) res.add(item);
+    }
+    return [...res];
+  }
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1583,4 +1598,4 @@ class NumjsArrays extends Array {
   }
 }
 
-console.log(Numjs.union1d([1, 2, 3, 4, 5, 6], [4, 5, 6, 7, 8, 9]));
+console.log(Numjs.setdiff1d([1, 2, 3, 4, 5, 6], [4, 5, 6, 7, 8, 9]));
