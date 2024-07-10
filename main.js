@@ -1583,6 +1583,10 @@ class Numjs {
     }
     return [...res];
   }
+
+  static setxor1d(arr1 = [], arr2 = []) {
+    return [...Numjs.setdiff1d(arr1, arr2), ...Numjs.setdiff1d(arr2, arr1)];
+  }
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1598,4 +1602,4 @@ class NumjsArrays extends Array {
   }
 }
 
-console.log(Numjs.setdiff1d([1, 2, 3, 4, 5, 6], [4, 5, 6, 7, 8, 9]));
+console.log(Numjs.setxor1d([1, 2, 3, 4, 5, 6], [4, 5, 6, 7, 8, 9]));
