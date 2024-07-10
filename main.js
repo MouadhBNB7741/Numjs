@@ -1557,6 +1557,17 @@ class Numjs {
     }
     return [...res];
   }
+
+  //
+  static union1d(arr1 = [], arr2 = []) {
+    if (
+      Array.isArray(arr1[0]) &&
+      Array.isArray(arr2[0] && !Array.isArray(arr1) && !Array.isArray(arr2))
+    )
+      throw Error("params must be 1 dimension array");
+
+    return [...new Set([...arr1, ...arr2])];
+  }
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1572,5 +1583,4 @@ class NumjsArrays extends Array {
   }
 }
 
-console.log(Numjs.intersect1d([1, 2, 3, 4, 5, 6], [4, 5, 6, 7, 8, 9]));
-console.log(Numjs.unique([1, 1, 1, 2, 3, 4, 4, 5, 5, 5, 3]).uniqueValue);
+console.log(Numjs.union1d([1, 2, 3, 4, 5, 6], [4, 5, 6, 7, 8, 9]));
