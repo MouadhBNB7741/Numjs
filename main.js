@@ -1293,7 +1293,7 @@ class Numjs {
     //
     static solve(A, b) {
       const n = A.length;
-      const x = numeric.clone(b);
+      const x = Numjs.clone(b);
 
       for (let i = 0; i < n; i++) {
         let maxRow = i;
@@ -1365,7 +1365,22 @@ class Numjs {
     static eig() {}
 
     //
-    static svd() {}
+    static svd(A) {
+      const m = A.length;
+      const n = A[0].length;
+
+      const U = Numjs.clone(A);
+      const S = new Array(Math.min(m, n));
+      const V = Numjs.identity(n);
+
+      for (let i = 0; i < Math.min(m, n); i++) {
+        S[i] = Math.sqrt(U[i][i] * U[i][i]);
+        for (let j = 0; j < n; j++) U[i][j] /= S[i];
+        for (let j = 0; j < n; j++) V[j][i] = U[i][j];
+      }
+
+      return { U: U, S: S, V: V };
+    }
 
     //
     static norm() {}
