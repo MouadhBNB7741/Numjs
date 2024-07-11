@@ -1359,10 +1359,40 @@ class Numjs {
     }
 
     //
-    static det() {}
+    static det(A) {
+      const n = A.length;
+      if (n === 1) {
+        return A[0][0];
+      } else if (n === 2) {
+        return A[0][0] * A[1][1] - A[0][1] * A[1][0];
+      } else {
+        let det = 0;
+        for (let i = 0; i < n; i++) {
+          let subMatrix = [];
+          for (let j = 1; j < n; j++) {
+            subMatrix.push(A[j].filter((_, k) => k !== i));
+          }
+          det += (i % 2 === 0 ? 1 : -1) * A[0][i] * numeric.det(subMatrix);
+        }
+        return det;
+      }
+    }
 
     //
-    static eig() {}
+    static eig(A) {
+      const n = A.length;
+      const v = Array(n).fill(1); // Start with a random vector
+      let lambda = 0;
+
+      for (let i = 0; i < 100; i++) {
+        // Fixed number of iterations
+        let Av = Numjs.dot(A, v);
+        lambda = Math.max(...Av.map(Math.abs));
+        v = Av.map((x) => x / lambda);
+      }
+
+      return { eigenvalue: lambda, eigenvector: v };
+    }
 
     //
     static svd(A) {
@@ -1745,13 +1775,11 @@ class Numjs {
     }
 
     function eigenvalues(matrix) {
-      //be changed when I write the function
-      const numeric = require("numeric");
-      return numeric.eig(matrix).lambda.x;
+      return Numjs.eig(matrix).lambda.x;
     }
 
     const cMatrix = companionMatrix(coeffs);
-    return eigenvalues(cMatrix);
+    return Numjs.Linalg.eig(cMatrix);
   }
 
   //
