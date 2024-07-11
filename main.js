@@ -1286,7 +1286,52 @@ class Numjs {
   }
 
   //
-  static tensordot(arr1 = [], arr2 = [], axes = 1) {}
+  static tensordot(arr1 = [], arr2 = [], axes = 1) {
+    if (typeof axes === "number") {
+      axes = [
+        [...Array(axes).keys()].map((i) => arr1.length - 1 - i),
+        [...Array(axes).keys()],
+      ];
+    }
+    let axesA = axes[0],
+      axesB = axes[1];
+
+    function shape(arr) {
+      if (Array.isArray(arr)) {
+        let sh = [];
+        while (Array.isArray(arr)) {
+          sh.push(arr.length);
+          arr = arr[0];
+        }
+        return sh;
+      }
+    }
+
+    let shapeA = shape(arr1),
+      shapeB = shape(arr2);
+
+    let newShapeA = [],
+      newShapeB = [];
+    for (let i = 0; i < shapeA.length; i++) {
+      if (!axesA.includes(i)) newShapeA.push(shapeA[i]);
+    }
+    for (let i = 0; i < shapeB.length; i++) {
+      if (!axesB.includes(i)) newShapeB.push(shapeB[i]);
+    }
+
+    let prodAxesA = axesA.reduce((prod, a) => prod * shapeA[a], 1);
+    let prodAxesB = axesB.reduce((prod, b) => prod * shapeB[b], 1);
+
+    arr1 = arr1.flat(Infinity);
+    arr2 = arr2.flat(Infinity);
+
+    arr1 = reshape(arr1, [...newShapeA, prodAxesA]);
+    arr2 = reshape(arr2, [prodAxesB, ...newShapeB]);
+
+    const result = Numjs.dot(arr1, arr2);
+
+    return Numjs.reshape(result, [...newShapeA, ...newShapeB]);
+  }
 
   //
   static Linalg = class {
@@ -1811,19 +1856,4 @@ class NumjsArrays extends Array {
   }
 }
 
-console.log(Numjs.roots([1, -6, 11, -6]));
-
 Numjs["/"]();
-
-function isClass(obj) {
-  const isCtorClass =
-    obj.constructor && obj.constructor.toString().substring(0, 5) === "class";
-  if (obj.prototype === undefined) {
-    return isCtorClass;
-  }
-  const isPrototypeCtorClass =
-    obj.prototype.constructor &&
-    obj.prototype.constructor.toString &&
-    obj.prototype.constructor.toString().substring(0, 5) === "class";
-  return isCtorClass || isPrototypeCtorClass;
-}
