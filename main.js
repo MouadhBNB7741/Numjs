@@ -1312,6 +1312,24 @@ class Numjs {
   };
 
   //
+  static identity(n) {
+    if (typeof n !== "number") throw Error("must enter a number");
+    const I = [];
+    for (let i = 0; i < n; i++) {
+      I[i] = [];
+      for (let j = 0; j < n; j++) {
+        I[i][j] = i === j ? 1 : 0;
+      }
+    }
+    return I;
+  }
+
+  //
+  static clone(arr = []) {
+    return JSON.parse(JSON.stringify(arr));
+  }
+
+  //
   static Random = class {
     //
     static rand(shape) {
@@ -1652,6 +1670,7 @@ class Numjs {
     }
 
     function eigenvalues(matrix) {
+      //be changed when I write the function
       const numeric = require("numeric");
       return numeric.eig(matrix).lambda.x;
     }
@@ -1660,6 +1679,7 @@ class Numjs {
     return eigenvalues(cMatrix);
   }
 
+  //
   static "/"() {
     console.log("wtf");
   }
@@ -1681,3 +1701,16 @@ class NumjsArrays extends Array {
 console.log(Numjs.roots([1, -6, 11, -6]));
 
 Numjs["/"]();
+
+function isClass(obj) {
+  const isCtorClass =
+    obj.constructor && obj.constructor.toString().substring(0, 5) === "class";
+  if (obj.prototype === undefined) {
+    return isCtorClass;
+  }
+  const isPrototypeCtorClass =
+    obj.prototype.constructor &&
+    obj.prototype.constructor.toString &&
+    obj.prototype.constructor.toString().substring(0, 5) === "class";
+  return isCtorClass || isPrototypeCtorClass;
+}
