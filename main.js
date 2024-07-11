@@ -1836,11 +1836,6 @@ class Numjs {
     const cMatrix = companionMatrix(coeffs);
     return Numjs.Linalg.eig(cMatrix);
   }
-
-  //
-  static "/"() {
-    console.log("wtf");
-  }
 }
 
 //for later transforming all arrays to numjs arrays
@@ -1855,5 +1850,3 @@ class NumjsArrays extends Array {
     this.ndim = ndim;
   }
 }
-
-Numjs["/"]();
