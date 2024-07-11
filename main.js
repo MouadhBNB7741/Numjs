@@ -1291,7 +1291,36 @@ class Numjs {
   //
   static Linalg = class {
     //
-    static solve() {}
+    static solve(A, b) {
+      const n = A.length;
+      const x = numeric.clone(b);
+
+      for (let i = 0; i < n; i++) {
+        let maxRow = i;
+        for (let k = i + 1; k < n; k++) {
+          if (Math.abs(A[k][i]) > Math.abs(A[maxRow][i])) maxRow = k;
+        }
+        let temp = A[i];
+        A[i] = A[maxRow];
+        A[maxRow] = temp;
+        temp = x[i];
+        x[i] = x[maxRow];
+        x[maxRow] = temp;
+
+        for (let k = i + 1; k < n; k++) {
+          let factor = A[k][i] / A[i][i];
+          for (let j = i; j < n; j++) A[k][j] -= factor * A[i][j];
+          x[k] -= factor * x[i];
+        }
+      }
+
+      for (let i = n - 1; i >= 0; i--) {
+        x[i] /= A[i][i];
+        for (let k = i - 1; k >= 0; k--) x[k] -= A[k][i] * x[i];
+      }
+
+      return x;
+    }
 
     //
     static inv(A) {
