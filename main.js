@@ -1222,8 +1222,6 @@ class Numjs {
 
       return result;
     }
-
-    //Ndim arrays needed
   }
 
   //
@@ -1296,7 +1294,40 @@ class Numjs {
     static solve() {}
 
     //
-    static inv() {}
+    static inv(A) {
+      const n = A.length,
+        I = Numjs.identity(n),
+        P = Numjs.clone(A);
+      for (let i = 0; i < n; i++) {
+        let maxRow = i;
+        for (let k = i + 1; k < n; k++) {
+          if (Math.abs(P[k][i]) > Math.abs(P[maxRow][i])) maxRow = k;
+        }
+        let temp = P[i];
+        P[i] = P[maxRow];
+        P[maxRow] = temp;
+        temp = I[i];
+        I[i] = I[maxRow];
+        I[maxRow] = temp;
+
+        for (let j = i + 1; j < n; j++) P[i][j] /= P[i][i];
+        for (let j = 0; j < n; j++) I[i][j] /= P[i][i];
+        P[i][i] = 1;
+
+        for (let u = i + 1; u < n; u++) {
+          for (let j = i + 1; j < n; j++) P[u][j] -= P[u][i] * P[i][j];
+          for (let j = 0; j < n; j++) I[u][j] -= P[u][i] * I[i][j];
+          P[u][i] = 0;
+        }
+      }
+      for (let i = n - 1; i >= 0; i--) {
+        for (let u = 0; u < i; u++) {
+          for (let j = 0; j < n; j++) I[u][j] -= P[u][i] * I[i][j];
+          P[u][i] = 0;
+        }
+      }
+      return I;
+    }
 
     //
     static det() {}
