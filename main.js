@@ -1381,11 +1381,10 @@ class Numjs {
     //
     static eig(A) {
       const n = A.length;
-      const v = Array(n).fill(1); // Start with a random vector
+      const v = Array(n).fill(1);
       let lambda = 0;
 
       for (let i = 0; i < 100; i++) {
-        // Fixed number of iterations
         let Av = Numjs.dot(A, v);
         lambda = Math.max(...Av.map(Math.abs));
         v = Av.map((x) => x / lambda);
@@ -1413,7 +1412,22 @@ class Numjs {
     }
 
     //
-    static norm() {}
+    static norm(A, ord = 2) {
+      if (typeof A[0] === "number") {
+        if (ord === 1) {
+          return A.reduce((sum, val) => sum + Math.abs(val), 0);
+        } else if (ord === 2) {
+          return Math.sqrt(A.reduce((sum, val) => sum + val * val, 0));
+        }
+      } else {
+        return Math.sqrt(
+          A.reduce(
+            (sum, row) => sum + row.reduce((rSum, val) => rSum + val * val, 0),
+            0
+          )
+        );
+      }
+    }
   };
 
   //
@@ -1772,10 +1786,6 @@ class Numjs {
       const lastRow = coeffs.slice(0, n).map((c) => -c / coeffs[n]);
       matrix[0] = lastRow;
       return matrix;
-    }
-
-    function eigenvalues(matrix) {
-      return Numjs.eig(matrix).lambda.x;
     }
 
     const cMatrix = companionMatrix(coeffs);
